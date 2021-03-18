@@ -1,4 +1,4 @@
-baseURL = "https://ghoshabhik.github.io/"
+baseURL = "https://knowabhik.netlify.app/"
 languageCode = "en-us"
 title = "Home"
 paginate = 300
