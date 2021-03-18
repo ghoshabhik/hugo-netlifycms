@@ -1,0 +1,43 @@
+{{ define "main"}}
+
+<article>
+    <div class="article-title  h-100 d-block py-5">
+        <p class="display-5 fw-bold text-white align-middle text-center mx-lg-5 px-lg-5">{{ .Title }}</p>
+    </div>
+    <div class="text-center text-muted mt-5">
+        Reading time: {{ math.Round (div ( countwords .Content) 220.0) }} minutes
+    </div>
+    <div class="article-meta d-flex justify-content-center mb-5 py-2">
+        <!-- <div class="article-author  mx-lg-2 px-4">
+            <i class="fas fa-user-circle"></i>
+            {{ .Params.author }}
+        </div> -->
+        <div class="mx-4">
+            <span class="article-date">
+                <i class="fas fa-calendar-alt"></i>
+                <time>{{ dateFormat .Site.Params.dateFormat .Date }}</time>
+            </span>
+            <span class="article-tags">
+                <i class="fas fa-tags"></i>
+                {{ range (.GetTerms "tags") }}
+                <a href="{{ .Permalink }}">{{ .LinkTitle }} |</a>
+                {{ end }}
+            </span>
+        </div>
+        
+
+    </div>
+    <div class="article-body d-flex flex-column justify-content-between mx-auto px-4">
+        <div class="px-lg-5 mx-lg-5">
+            {{ .Content }}
+        </div>
+
+
+    </div>
+    <div class="text-center mx-auto"><i class="fas fa-ellipsis-h"></i></div>
+    
+</article>
+
+
+
+{{ end }}

@@ -1,0 +1,159 @@
+{{ define "main" }}
+<div class="container mt-5">
+    <section class="hero-section">
+        <div class="row intro-section px-lg-5 my-5">
+
+            <div class="col-lg-3 intro-center">
+                <img src="/img/profile1.jpg" class="img-thumbnail border boder-success rounded shadow-sm" alt="...">
+            </div>
+            <div class="col-lg-9 intro-right shadow-sm ">
+                <div class="text-center">
+                    <p class="px-lg-5 mt-5">
+                        <span class="intro-name">abhik ghosh</span>
+                    </p>
+                    <p class="px-lg-5 mt-0 mb-5">
+                        Data Solution Architect, currently working on data migration into hybrid/ public/ private cloud
+                        environment and analytics data platform modernization. Love clean code and functional style
+                        programming. Enjoy long run, photography & travelling
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="recent-blogs">
+        <div class="mt-5 px-lg-5 mx-lg-3 recent-blogs-title">Blogs 📋</div>
+        <div class="border shadow-sm bg-white px-lg-5 mx-lg-4 py-5">
+            {{ range ( where site.RegularPages "Section" "posts" | first 3 ) }}
+
+            <div class=" mx-lg-5 px-lg-5">
+                <article class="px-5 my-3">
+                    <div class="article-title-list">
+                        <h3>
+                            <a href="{{ .Permalink}}">{{ .Title }}</a>
+                        </h3>
+                    </div>
+                    <div class="text-muted">
+                        Reading time: {{ math.Round (div ( countwords .Content) 220.0) }} minutes
+                    </div>
+                    <div class="article-meta-list">
+                        <span class="article-date text-muted font-weight-light">
+                            {{ dateFormat .Site.Params.dateFormat .Date }}
+                        </span>
+                        <div class="article-tags-list">
+                            <i class="fas fa-tags text-success"></i>
+                            {{ range (.GetTerms "tags") }}
+                            <a href="{{ .Permalink }}">{{ .LinkTitle }} |</a>
+                            {{ end }}
+                        </div>
+                    </div>
+                    <div class="article-body-list">
+                        {{ .Params.description }}
+                    </div>
+                    <a href="{{ .Permalink}}" class="text-dark pt-3 read-more">Read more <i
+                            class="fas fa-long-arrow-alt-right"></i></a>
+                </article>
+            </div>
+
+            {{ end }}
+            <div class="d-flex justify-content-end px-3">
+                <a class="nav-link " href="/posts/">all posts <i
+                        class="fas fa-long-arrow-alt-right text-success"></i></a>
+            </div>
+        </div>
+    </section>
+    <section class="recent-projects">
+        <div class="mt-5 px-lg-5 mx-lg-3 recent-blogs-title">Projects 🚧</div>
+        <div class="border shadow-sm bg-white px-lg-5 mx-lg-4 py-5">
+            {{ range ( where site.RegularPages "Section" "projects" | first 3 ) }}
+
+            <div class=" mx-lg-5 px-lg-5">
+                <article class="px-5 my-3">
+                    <div class="article-title-list">
+                        <h3>
+                            <a href="{{ .Permalink}}">{{ .Title }}</a>
+                        </h3>
+                    </div>
+                    <div class="text-muted">
+                        Reading time: {{ math.Round (div ( countwords .Content) 220.0) }} minutes
+                    </div>
+                    <div class="article-meta-list">
+                        <span class="article-date text-muted font-weight-light">
+                            {{ dateFormat .Site.Params.dateFormat .Date }}
+                        </span>
+                        <div class="article-tags-list">
+                            <i class="fas fa-tags text-success"></i>
+                            {{ range (.GetTerms "tags") }}
+                            <a href="{{ .Permalink }}">{{ .LinkTitle }} |</a>
+                            {{ end }}
+                        </div>
+                    </div>
+                    <div class="article-body-list">
+                        {{ .Params.description }}
+                    </div>
+                    <a href="{{ .Permalink}}" class="text-dark pt-3 read-more">Read more <i
+                            class="fas fa-long-arrow-alt-right"></i></a>
+                </article>
+            </div>
+            {{ end }}
+
+            <div class="d-flex justify-content-end px-3">
+                <a class="nav-link " href="/projects/">all projects <i
+                        class="fas fa-long-arrow-alt-right text-success"></i></a>
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="mt-5 px-lg-5 mx-lg-3 recent-blogs-title">Tags 🏷️</div>
+        <div class="border shadow-sm bg-white px-lg-5 mx-lg-4 py-5">
+            <div class="px-5 my-3">
+                <span>In Blog: </span>
+                {{ $posts := where .Site.Pages "Type" "posts" }}
+
+                {{range $name, $taxonomy := .Site.Taxonomies.tags }}
+
+                {{ $.Scratch.Set "tagCounter" 0 }}
+
+
+                {{range $posts}}
+
+                {{if in .Params.tags $name}}
+                {{$.Scratch.Add "tagCounter" 1}}
+                {{end}}
+
+                {{end}}
+                {{if ne ($.Scratch.Get "tagCounter") 0}}
+
+                <a href="/tags/{{$name}}">{{$name}}</a>
+                <sup>{{ $.Scratch.Get "tagCounter" }}</sup>
+
+
+                {{end}}
+                {{end}}
+
+                <hr>
+                <span>In Projects: </span>
+                {{ $posts := where .Site.Pages "Type" "projects" }}
+
+                {{range $name, $taxonomy := .Site.Taxonomies.tags }}
+
+                {{ $.Scratch.Set "tagCounter" 0 }}
+                {{range $posts}}
+
+                {{if in .Params.tags $name}}
+                {{$.Scratch.Add "tagCounter" 1}}
+                {{end}}
+
+                {{end}}
+                {{if ne ($.Scratch.Get "tagCounter") 0}}
+                <a href="/tags/{{$name}}">{{$name}}</a>
+                <sup>{{ $.Scratch.Get "tagCounter" }}</sup>
+                {{end}}
+                {{end}}
+            </div>
+        </div>
+    </section>
+
+</div>
+{{ end }}

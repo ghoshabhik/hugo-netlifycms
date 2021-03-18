@@ -1,0 +1,88 @@
+{{ define "main"}}
+
+<section class="article-list container my-5">
+    <div class="">
+        <div class="row">
+            {{ range $index, $pages:= .Paginator.Pages }}
+
+            <div class=" mx-lg-5 px-lg-5">
+                <article class="px-lg-5 my-3">
+                    <div class="article-title-list">
+                        <h3>
+                            <a href="{{ .Permalink}}">{{ .Title }}</a>
+                        </h3>
+                    </div>
+                    <div class="text-muted">
+                        Reading time: {{ math.Round (div ( countwords .Content) 220.0) }} minutes
+                    </div>
+                    <div class="article-meta-list">
+                        <span class="article-date text-muted font-weight-light">
+                            {{ dateFormat .Site.Params.dateFormat .Date }}
+                        </span>
+                        <div class="article-tags-list">
+                            <i class="fas fa-tags text-success"></i>
+                            {{ range (.GetTerms "tags") }}
+                            <a href="{{ .Permalink }}">{{ .LinkTitle }} |</a>
+                            {{ end }}
+                        </div>
+                    </div>
+                    <div class="article-body-list">
+                        {{ .Params.description }}
+                    </div>
+                    <a href="{{ .Permalink}}" class="text-dark pt-3 read-more">Read more <i
+                            class="fas fa-long-arrow-alt-right"></i></a>
+                </article>
+            </div>
+
+            {{ end }}
+        </div>
+        {{ template "_internal/pagination.html" .}}
+    </div>
+
+    <div class="text-center mt-5">
+        {{ $url := urls.Parse .Permalink }}
+        <i class="fas fa-tags text-success"></i>
+        {{ if eq "/projects/" $url.Path }}
+        {{ $posts := where .Site.Pages "Type" "projects" }}
+
+        {{range $name, $taxonomy := .Site.Taxonomies.tags }}
+
+        {{ $.Scratch.Set "tagCounter" 0 }}
+        {{range $posts}}
+
+        {{if in .Params.tags $name}}
+        {{$.Scratch.Add "tagCounter" 1}}
+        {{end}}
+
+        {{end}}
+        {{if ne ($.Scratch.Get "tagCounter") 0}}
+        <a href="/tags/{{$name}}">{{$name}}</a>
+        <sup>{{ $.Scratch.Get "tagCounter" }}</sup>
+        {{end}}
+        {{end}}
+        {{ end }}
+
+
+        {{ if eq "/posts/" $url.Path }}
+        {{ $posts := where .Site.Pages "Type" "posts" }}
+
+        {{range $name, $taxonomy := .Site.Taxonomies.tags }}
+
+        {{ $.Scratch.Set "tagCounter" 0 }}
+        {{range $posts}}
+
+        {{if in .Params.tags $name}}
+        {{$.Scratch.Add "tagCounter" 1}}
+        {{end}}
+
+        {{end}}
+        {{if ne ($.Scratch.Get "tagCounter") 0}}
+        <a href="/tags/{{$name}}">{{$name}}</a>
+        <sup>{{ $.Scratch.Get "tagCounter" }}</sup>
+        {{end}}
+        {{end}}
+        {{ end }}
+    </div>
+</section>
+
+{{ end }}
